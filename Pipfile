@@ -10,6 +10,7 @@ djangorestframework = "*"
 drf-spectacular = "*"
 djangorestframework-api-key = "*"
 ruff = "*"
+pre-commit = "*"
 
 [dev-packages]
 

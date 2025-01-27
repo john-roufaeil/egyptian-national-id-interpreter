@@ -1,9 +1,8 @@
+from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_api_key.models import APIKey
-from rest_framework import status
+
 from api.models import APICallLog
-from api.utils import governorates
-from api.serializers import NationalIDDataSerializer
 
 
 class GenerateAPIKeyViewTests(APITestCase):
@@ -17,8 +16,7 @@ class GenerateAPIKeyViewTests(APITestCase):
         """Ensure multiple API keys generated are unique."""
         response1 = self.client.get("/")
         response2 = self.client.get("/")
-        self.assertNotEqual(
-            response1.data['api_key'], response2.data['api_key'])
+        self.assertNotEqual(response1.data["api_key"], response2.data["api_key"])
 
 
 class NationalIDViewTests(APITestCase):
@@ -46,8 +44,7 @@ class NationalIDViewTests(APITestCase):
     # Input Validation
     def test_empty_payload(self):
         """Test request with no payload returns 400."""
-        response = self.client.post(
-            "/validate-national-id/", {}, **self.headers)
+        response = self.client.post("/validate-national-id/", {}, **self.headers)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_valid_national_id(self):
@@ -114,7 +111,7 @@ class NationalIDViewTests(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_non_leap_year(self):
+    def test_leap_year(self):
         """Test valid date in leap year."""
         response = self.client.post(
             "/validate-national-id/",

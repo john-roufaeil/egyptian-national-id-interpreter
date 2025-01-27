@@ -29,7 +29,7 @@ governorates = {
     "33": {"ar": "مطروح", "en": "Matrouh"},
     "34": {"ar": "شمال سيناء", "en": "North Sinai"},
     "35": {"ar": "جنوب سيناء", "en": "South Sinai"},
-    "88": {"ar": "خارج الجمهورية", "en": "Outside Egypt"}
+    "88": {"ar": "خارج الجمهورية", "en": "Outside Egypt"},
 }
 
 
@@ -48,16 +48,14 @@ def log_api_call(national_id, api_key, endpoint, success):
 
 def is_valid_national_id(national_id):
     # Check if first digit is valid (2 or 3)
-    if national_id[0] not in ['2', '3']:
+    if national_id[0] not in ["2", "3"]:
         return False
 
-    century = "19" if national_id[0] == '2' else "20"
+    century = "19" if national_id[0] == "2" else "20"
     year = century + national_id[1:3]
     month = national_id[3:5]
     day = national_id[5:7]
     governorate = national_id[7:9]
-    gender = "female" if int(national_id[12]) % 2 == 0 else "male"
-    serial_number = national_id[9:13]
 
     # Check if year is valid (between 1900 and 2025)
     if not (VALID_YEAR_RANGE[0] <= int(year) <= VALID_YEAR_RANGE[1]):

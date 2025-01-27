@@ -1,5 +1,5 @@
-from django.db import models
 from django.core.exceptions import ValidationError
+from django.db import models
 
 
 class APICallLog(models.Model):
@@ -10,18 +10,24 @@ class APICallLog(models.Model):
     success = models.BooleanField()
 
     def __str__(self):
-        return f"{self.api_key[:8]} - {str(self.timestamp)[:19]} ({'Success' if self.success else 'Failed'}): {self.national_id}"
+        return (
+            f"{self.api_key[:8]} - {str(self.timestamp)[:19]}"
+            f"({'Success' if self.success else 'Failed'}): {self.national_id}"
+        )
 
     def clean(self):
         if len(self.api_key) > 64:
             raise ValidationError(
-                {'api_key': 'API Key exceeds maximum length of 32 characters.'})
+                {"api_key": "API Key exceeds maximum length of 32 characters."}
+            )
         if len(self.national_id) > 14:
             raise ValidationError(
-                {'national_id': 'National ID exceeds maximum length of 14 characters.'})
+                {"national_id": "National ID exceeds maximum length of 14 characters."}
+            )
         if len(self.endpoint) > 50:
             raise ValidationError(
-                {'endpoint': 'Endpoint URL exceeds maximum length of 50 characters.'})
+                {"endpoint": "Endpoint URL exceeds maximum length of 50 characters."}
+            )
         return super().clean()
 
     def save(self, *args, **kwargs):

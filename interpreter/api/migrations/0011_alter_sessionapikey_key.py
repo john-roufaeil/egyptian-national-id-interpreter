@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0010_sessionapikey_key'),
+        ("api", "0010_sessionapikey_key"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sessionapikey',
-            name='key',
+            model_name="sessionapikey",
+            name="key",
             field=models.CharField(max_length=32),
         ),
     ]

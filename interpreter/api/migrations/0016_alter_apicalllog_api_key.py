@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0015_alter_apicalllog_api_key'),
+        ("api", "0015_alter_apicalllog_api_key"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='apicalllog',
-            name='api_key',
+            model_name="apicalllog",
+            name="api_key",
             field=models.CharField(max_length=64),
         ),
     ]

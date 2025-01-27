@@ -5,20 +5,21 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0004_sessionapikey_api_key'),
+        ("api", "0004_sessionapikey_api_key"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='api_key',
+            model_name="sessionapikey",
+            name="api_key",
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='actual_key',
-            field=models.CharField(default=django.utils.timezone.now, max_length=255, unique=True),
+            model_name="sessionapikey",
+            name="actual_key",
+            field=models.CharField(
+                default=django.utils.timezone.now, max_length=255, unique=True
+            ),
             preserve_default=False,
         ),
     ]

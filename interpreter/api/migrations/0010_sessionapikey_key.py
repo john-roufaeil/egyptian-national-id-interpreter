@@ -4,16 +4,15 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0009_remove_sessionapikey_actual_key'),
+        ("api", "0009_remove_sessionapikey_actual_key"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sessionapikey',
-            name='key',
-            field=models.CharField(default='a', max_length=32, unique=True),
+            model_name="sessionapikey",
+            name="key",
+            field=models.CharField(default="a", max_length=32, unique=True),
             preserve_default=False,
         ),
     ]

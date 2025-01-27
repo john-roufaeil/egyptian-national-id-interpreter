@@ -4,43 +4,44 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0006_alter_sessionapikey_actual_key'),
+        ("api", "0006_alter_sessionapikey_actual_key"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='sessionapikey',
+            name="sessionapikey",
             options={},
         ),
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='created',
+            model_name="sessionapikey",
+            name="created",
         ),
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='expiry_date',
+            model_name="sessionapikey",
+            name="expiry_date",
         ),
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='hashed_key',
+            model_name="sessionapikey",
+            name="hashed_key",
         ),
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='name',
+            model_name="sessionapikey",
+            name="name",
         ),
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='prefix',
+            model_name="sessionapikey",
+            name="prefix",
         ),
         migrations.RemoveField(
-            model_name='sessionapikey',
-            name='revoked',
+            model_name="sessionapikey",
+            name="revoked",
         ),
         migrations.AlterField(
-            model_name='sessionapikey',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            model_name="sessionapikey",
+            name="id",
+            field=models.BigAutoField(
+                auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+            ),
         ),
     ]

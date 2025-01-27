@@ -4,13 +4,12 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0012_remove_sessionapikey_key'),
+        ("api", "0012_remove_sessionapikey_key"),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='SessionAPIKey',
+            name="SessionAPIKey",
         ),
     ]

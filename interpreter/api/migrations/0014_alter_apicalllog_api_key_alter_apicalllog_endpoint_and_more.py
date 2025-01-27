@@ -4,25 +4,24 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0013_delete_sessionapikey'),
+        ("api", "0013_delete_sessionapikey"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='apicalllog',
-            name='api_key',
+            model_name="apicalllog",
+            name="api_key",
             field=models.CharField(max_length=32),
         ),
         migrations.AlterField(
-            model_name='apicalllog',
-            name='endpoint',
+            model_name="apicalllog",
+            name="endpoint",
             field=models.CharField(max_length=50),
         ),
         migrations.AlterField(
-            model_name='apicalllog',
-            name='national_id',
+            model_name="apicalllog",
+            name="national_id",
             field=models.CharField(max_length=14),
         ),
     ]

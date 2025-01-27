@@ -1,5 +1,10 @@
 from rest_framework.test import APITestCase
-from api.serializers import NationalIDDataSerializer, NationalIDSerializer, APIKeySerializer
+
+from api.serializers import (
+    APIKeySerializer,
+    NationalIDDataSerializer,
+    NationalIDSerializer,
+)
 
 
 class SerializersTest(APITestCase):
@@ -10,7 +15,7 @@ class SerializersTest(APITestCase):
             "day": "15",
             "governorate": {"ar": "القاهرة", "en": "Cairo"},
             "gender": {"ar": "ذكر", "en": "male"},
-            "serial_number": "1234"
+            "serial_number": "1234",
         }
         serializer = NationalIDDataSerializer(data=data)
         self.assertTrue(serializer.is_valid())
@@ -22,7 +27,7 @@ class SerializersTest(APITestCase):
             "day": "12",
             "governorate": {"ar": "القاهرة", "en": "Cairo"},
             "gender": {"ar": "ذكر"},
-            "serial_number": "12"
+            "serial_number": "12",
         }
         serializer = NationalIDDataSerializer(data=data)
         self.assertFalse(serializer.is_valid())
@@ -53,7 +58,7 @@ class SerializersTest(APITestCase):
             "month": "01",
             "day": "15",
             "governorate": {"ar": "القاهرة", "en": "Cairo"},
-            "serial_number": "1234"
+            "serial_number": "1234",
             # Missing gender
         }
         serializer = NationalIDDataSerializer(data=data)

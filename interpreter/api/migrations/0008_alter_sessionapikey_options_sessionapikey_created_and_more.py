@@ -5,52 +5,86 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('api', '0007_alter_sessionapikey_options_and_more'),
+        ("api", "0007_alter_sessionapikey_options_and_more"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='sessionapikey',
-            options={'ordering': ('-created',), 'verbose_name': 'API key', 'verbose_name_plural': 'API keys'},
+            name="sessionapikey",
+            options={
+                "ordering": ("-created",),
+                "verbose_name": "API key",
+                "verbose_name_plural": "API keys",
+            },
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='created',
-            field=models.DateTimeField(auto_now_add=True, db_index=True, default=django.utils.timezone.now),
+            model_name="sessionapikey",
+            name="created",
+            field=models.DateTimeField(
+                auto_now_add=True, db_index=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='expiry_date',
-            field=models.DateTimeField(blank=True, help_text='Once API key expires, clients cannot use it anymore.', null=True, verbose_name='Expires'),
+            model_name="sessionapikey",
+            name="expiry_date",
+            field=models.DateTimeField(
+                blank=True,
+                help_text="Once API key expires, clients cannot use it anymore.",
+                null=True,
+                verbose_name="Expires",
+            ),
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='hashed_key',
-            field=models.CharField(default=django.utils.timezone.now, editable=False, max_length=150),
+            model_name="sessionapikey",
+            name="hashed_key",
+            field=models.CharField(
+                default=django.utils.timezone.now, editable=False, max_length=150
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='name',
-            field=models.CharField(default=None, help_text='A free-form name for the API key. Need not be unique. 50 characters max.', max_length=50),
+            model_name="sessionapikey",
+            name="name",
+            field=models.CharField(
+                default=None,
+                help_text=(
+                    "A free-form name for the API key. "
+                    "Need not be unique. 50 characters max."
+                ),
+                max_length=50,
+            ),
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='prefix',
-            field=models.CharField(default='a', editable=False, max_length=8, unique=True),
+            model_name="sessionapikey",
+            name="prefix",
+            field=models.CharField(
+                default="a", editable=False, max_length=8, unique=True
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='sessionapikey',
-            name='revoked',
-            field=models.BooleanField(blank=True, default=False, help_text='If the API key is revoked, clients cannot use it anymore. (This cannot be undone.)'),
+            model_name="sessionapikey",
+            name="revoked",
+            field=models.BooleanField(
+                blank=True,
+                default=False,
+                help_text=(
+                    "If the API key is revoked, clients cannot "
+                    "use it anymore. (This cannot be undone.)"
+                ),
+            ),
         ),
         migrations.AlterField(
-            model_name='sessionapikey',
-            name='id',
-            field=models.CharField(editable=False, max_length=150, primary_key=True, serialize=False, unique=True),
+            model_name="sessionapikey",
+            name="id",
+            field=models.CharField(
+                editable=False,
+                max_length=150,
+                primary_key=True,
+                serialize=False,
+                unique=True,
+            ),
         ),
     ]
