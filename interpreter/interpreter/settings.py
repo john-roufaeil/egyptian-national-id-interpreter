@@ -4,9 +4,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',  # Token-based authentication
-        # 'rest_framework.authentication.BasicAuthentication',  # Optional, if you want to use Basic Auth
-        # 'rest_framework.authentication.SessionAuthentication',  # Optional, if you want to use Cookie Auth
+        'rest_framework.authentication.TokenAuthentication'
     ],
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     "rest_framework_api_key.permissions.HasAPIKey"],
