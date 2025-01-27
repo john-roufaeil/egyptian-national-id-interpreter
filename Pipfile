@@ -9,6 +9,7 @@ django-rest-framework = "*"
 djangorestframework = "*"
 drf-spectacular = "*"
 djangorestframework-api-key = "*"
+ruff = "*"
 
 [dev-packages]
 
