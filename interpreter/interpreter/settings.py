@@ -3,6 +3,9 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     "rest_framework_api_key.permissions.HasAPIKey"],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.UserRateThrottle',
     ],
@@ -10,6 +13,11 @@ REST_FRAMEWORK = {
         'user': '10/minute',
     },
 }
+
+MIDDLEWARE = [
+    'api.APIKeyMiddleware'
+]
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6@kkr)8e#&2o83^aap4r)^*i2)%a2m%qvkmdg_+7k_%!g9rl+9'
 
@@ -26,7 +34,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
-    'rest_framework'
+    'rest_framework',
+    "rest_framework_api_key",
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [

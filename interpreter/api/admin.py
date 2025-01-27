@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import SessionAPIKey, APICallLog
 
-# Register your models here.
+admin.site.register(SessionAPIKey)
+admin.site.register(APICallLog)

@@ -1,6 +1,9 @@
 from django.urls import path
-from . import views
+from .views import NationalIDView, GenerateAPIKeyView
 
 urlpatterns = [
-    path('', views.index)
+    path('validate-national-id/', NationalIDView.as_view(),
+         name='validate-national-id'),
+    path('', GenerateAPIKeyView.as_view(), name='generate-api-key'),
+
 ]
