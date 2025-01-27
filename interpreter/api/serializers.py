@@ -17,8 +17,12 @@ class NationalIDSerializer(serializers.Serializer):
     """
     Serializer for validating a National ID number.
     """
-    national_id = serializers.CharField(
-        max_length=14, help_text="The national ID number.")
+    national_id = serializers.RegexField(
+        regex=r"^\d{14}$",
+        max_length=14,
+        min_length=14,
+        help_text="The national ID number."
+    )
 
 
 class APIKeySerializer(serializers.Serializer):
@@ -26,4 +30,4 @@ class APIKeySerializer(serializers.Serializer):
     Serializer for api key.
     """
     api_key = serializers.CharField(
-        max_length=32, help_text="The API Key.")
+        max_length=64, help_text="The API Key.")
