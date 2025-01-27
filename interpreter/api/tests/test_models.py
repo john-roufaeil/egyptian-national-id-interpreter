@@ -126,7 +126,7 @@ class APICallLogTest(TestCase):
 
     def test_str_representation_failure(self):
         expected_str = (
-            f"{self.log.api_key[:8]} - {str(self.log.timestamp)[:19]} "
+            f"{self.log.api_key[:8]} - {str(self.log.timestamp)[:19]}"
             f"(Failed): {self.log.national_id}"
         )
         self.assertEqual(str(self.log), expected_str)
