@@ -1,10 +1,12 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from drf_spectacular.utils import extend_schema, OpenApiExample  # type: ignore
-from rest_framework_api_key.models import APIKey  # type: ignore
+from drf_spectacular.utils import extend_schema, OpenApiExample
+from rest_framework_api_key.models import APIKey
+
+from api.models import APICallLog
 from .serializers import NationalIDSerializer, NationalIDDataSerializer, APIKeySerializer
-from .utils import is_valid_national_id, log_api_call, VALID_YEAR_RANGE, governorates
+from .utils import is_valid_national_id, log_api_call, governorates
 
 API_KEY_HEADER = 'Api-Key '
 
