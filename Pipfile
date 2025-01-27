@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 django-rest-framework = "*"
+djangorestframework = "*"
+drf-spectacular = "*"
+djangorestframework-api-key = "*"
 
 [dev-packages]
 

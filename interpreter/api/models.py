@@ -1,22 +1,4 @@
 from django.db import models
-from django.contrib.auth.models import User
-from rest_framework_api_key.models import APIKey, AbstractAPIKey  # type: ignore
-from django.utils.crypto import get_random_string
-from django.utils.timezone import now
-
-
-class SessionAPIKey(AbstractAPIKey):
-    @classmethod
-    def create_key(cls, name):
-        key = get_random_string(32)
-        # Add 'created' explicitly
-        session_api_key = cls(name=name, created=now())
-        session_api_key.save()
-        return session_api_key, key
-
-    def __str__(self):
-        return f"{self.name} - {self.prefix}"
-
 
 class APICallLog(models.Model):
     api_key = models.CharField(max_length=255)
@@ -26,4 +8,4 @@ class APICallLog(models.Model):
     success = models.BooleanField()
 
     def __str__(self):
-        return self.api_key + '-' + self.timestamp + " (" + self.success + ")"
+        return f"{self.api_key[:8]} - {str(self.timestamp)[:19]} ({'Success' if self.success else 'Failed'}): {self.national_id}"

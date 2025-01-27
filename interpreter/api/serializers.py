@@ -12,8 +12,18 @@ class NationalIDDataSerializer(serializers.Serializer):
     gender = serializers.DictField(child=serializers.CharField())
     serial_number = serializers.CharField(max_length=4)
 
+
 class NationalIDSerializer(serializers.Serializer):
     """
     Serializer for validating a National ID number.
     """
-    national_id = serializers.CharField(max_length=14, help_text="The national ID number.")
+    national_id = serializers.CharField(
+        max_length=14, help_text="The national ID number.")
+
+
+class APIKeySerializer(serializers.Serializer):
+    """
+    Serializer for api key.
+    """
+    api_key = serializers.CharField(
+        max_length=32, help_text="The API Key.")

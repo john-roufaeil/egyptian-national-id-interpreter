@@ -2,14 +2,22 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from rest_framework_api_key.models import APIKey
-from .serializers import NationalIDSerializer
-from .models import APICallLog, SessionAPIKey
+from .serializers import NationalIDSerializer, NationalIDDataSerializer, APIKeySerializer
+from .models import APICallLog
 from rest_framework_api_key.permissions import HasAPIKey
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 
 class GenerateAPIKeyView(APIView):
+    """
+    Endpoint to generate an API Key.
+    """
+    @extend_schema(
+        responses=APIKeySerializer,
+    )
     def get(self, request, *args, **kwargs):
         api_key, key = APIKey.objects.create_key(name="New Key")
         return Response({"api_key": key})
@@ -17,15 +25,33 @@ class GenerateAPIKeyView(APIView):
 
 class NationalIDView(APIView):
     """
-    Endpoint to validate a National ID number and extract information from valid ones.
+    Endpoint to validate a National ID number and extract information if valid.
     """
 
-    # permission_classes = [HasAPIKey]
-
-    @extend_schema(request=NationalIDSerializer)
+    @extend_schema(
+        # parameters=[
+        #     OpenApiParameter(
+        #         name="Authorization",
+        #         type=str,
+        #         location=OpenApiParameter.HEADER,
+        #         required=True,
+        #         description="API Key to authenticate the request"
+        #     )
+        # ],
+        # examples=[
+        #     OpenApiExample(
+        #         "Example Authorization Header",
+        #         value="Authorization: Api-Key 123"
+        #     )
+        # ],
+        request=NationalIDSerializer,
+        responses=NationalIDDataSerializer
+    )
     def post(self, request, *args, **kwargs):
-        api_key = request.headers.get(
-            'Authorization', '').replace('Api-Key ', '').strip()
+        api_key = request.META.get(
+            'HTTP_AUTHORIZATION', '').replace('Api-Key ', '').strip()
+        # api_key = request.headers.get(
+        #     'Authorization', '').replace('Api-Key ', '').strip()
         endpoint = request.path
         if not api_key:
             return Response({"error": "API key is missing."}, status=400)
@@ -69,25 +95,18 @@ class NationalIDView(APIView):
         def is_leap_year(year):
             return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 
-        serializer = NationalIDSerializer(data=request.data)
-        if serializer.is_valid():
-            national_id = serializer.validated_data['national_id']
-
-            APIKey.objects.filter(hashed_key=api_key).first()
+        def log_api_call(national_id, api_key, endpoint, success):
             APICallLog.objects.create(
                 national_id=national_id,
                 api_key=api_key,
                 endpoint=endpoint,
-                success=True,
+                success=success,
             )
 
-            # Check if length is 14 and only digits
-            if len(national_id) != 14 or not national_id.isdigit():
-                return Response({"error": "National ID must be 14 digits."}, status=status.HTTP_400_BAD_REQUEST)
-
+        def is_valid_national_id(national_id):
             # Check if first digit is valid (2 or 3)
             if national_id[0] not in ['2', '3']:
-                return Response({"error": "National ID is invalid."}, status=status.HTTP_400_BAD_REQUEST)
+                return False
 
             century = "19" if national_id[0] == '2' else "20"
             year = century + national_id[1:3]
@@ -99,11 +118,11 @@ class NationalIDView(APIView):
 
             # Check if year is valid (between 1900 and 2025)
             if int(year) < 1900 or int(year) > 2025:
-                return Response({"error": "National ID is invalid."}, status=status.HTTP_400_BAD_REQUEST)
+                return False
 
             # Check if month is valid (between 1 and 12)
             if int(month) > 12 or int(month) == 0:
-                return Response({"error": "National ID is invalid."}, status=status.HTTP_400_BAD_REQUEST)
+                return False
 
             if month == 2:
                 valid_days = 29 if is_leap_year(year) else 28
@@ -114,12 +133,35 @@ class NationalIDView(APIView):
 
             # Check if day is valid (between 1 and 31)
             if int(day) > valid_days or int(day) == 0:
-                return Response({"error": "National ID is invalid."}, status=status.HTTP_400_BAD_REQUEST)
+                return False
 
             # Check if governorate valid
             if governorate not in governorates:
+                return False
+            return True
+
+        serializer = NationalIDSerializer(data=request.data)
+        if serializer.is_valid():
+            national_id = serializer.validated_data['national_id']
+
+            APIKey.objects.filter(hashed_key=api_key).first()
+            # Check if length is 14 and only digits
+            if len(national_id) != 14 or not national_id.isdigit():
+                log_api_call(national_id, api_key, endpoint, False)
+                return Response({"error": "National ID must be 14 digits."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not is_valid_national_id(national_id):
+                log_api_call(national_id, api_key, endpoint, False)
                 return Response({"error": "National ID is invalid."}, status=status.HTTP_400_BAD_REQUEST)
 
+            century = "19" if national_id[0] == '2' else "20"
+            year = century + national_id[1:3]
+            month = national_id[3:5]
+            day = national_id[5:7]
+            governorate = national_id[7:9]
+            gender = "female" if int(national_id[12]) % 2 == 0 else "male"
+            serial_number = national_id[9:13]
+            log_api_call(national_id, api_key, endpoint, True)
             result = {
                 "year": int(year),
                 "month": month,
@@ -130,10 +172,5 @@ class NationalIDView(APIView):
             }
             return Response(result, status=status.HTTP_200_OK)
 
-        APICallLog.objects.create(
-            national_id="None",
-            api_key=api_key,
-            endpoint=endpoint,
-            success=False,
-        )
+        log_api_call("None", api_key, endpoint, False)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

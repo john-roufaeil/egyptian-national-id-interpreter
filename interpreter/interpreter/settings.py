@@ -3,6 +3,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # Token-based authentication
+        # 'rest_framework.authentication.BasicAuthentication',  # Optional, if you want to use Basic Auth
+        # 'rest_framework.authentication.SessionAuthentication',  # Optional, if you want to use Cookie Auth
+    ],
     # 'DEFAULT_PERMISSION_CLASSES': [
     #     "rest_framework_api_key.permissions.HasAPIKey"],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -13,10 +18,6 @@ REST_FRAMEWORK = {
         'user': '10/minute',
     },
 }
-
-MIDDLEWARE = [
-    'api.APIKeyMiddleware'
-]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6@kkr)8e#&2o83^aap4r)^*i2)%a2m%qvkmdg_+7k_%!g9rl+9'
@@ -102,3 +103,27 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Egyptian National ID Validator',
+    'DESCRIPTION': 'A simple validator for Egyptian national IDs and data extractor',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': True,
+    "COMPONENT_SPLIT_REQUEST": True,
+    # "SECURITY": [{"ApiKeyAuth": []}],
+    'SWAGGER_UI_SETTINGS': {
+        'persistAuthorization': True,
+    },
+    # "AUTHENTICATION_WHITELIST": [],
+    "SERVE_INCLUDE_SCHEMA": True,
+    "SERVE_PUBLIC": True,
+    "COMPONENTS": {
+        "securitySchemes": {
+            "ApiKeyAuth": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "Authorization",
+            },
+        },
+    },
+}
